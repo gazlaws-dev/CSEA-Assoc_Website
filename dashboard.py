@@ -111,10 +111,88 @@ def edit_about():
 			print("Invalid input")
 
 
+
+def edit_members():
+
+	while(1):
+
+		print ("\nEnter 1 to add faculty")
+		print ("Enter 2 to add student")
+		print ("Enter 3 to exit")
+
+		choice = raw_input()
+		choice = int(choice)
+
+		if(choice == 1):
+
+			db_ref_string = 'members/faculty/%s'
+			blob_ref_string = 'members/faculty/%s'
+
+			name = raw_input("\nEnter name : ")
+			email = raw_input("Enter email : ")
+			file_dir = raw_input("Enter path to image : ")
+
+			blob = bucket.blob(blob_ref_string % name)
+			blob.upload_from_filename(file_dir) 
+
+			db_ref = db.reference(db_ref_string % name)
+
+			user_data = {
+				'nameof' : name,
+				'email' : email,
+				'img' : blob_ref_string % name
+			}
+
+			db_ref.set(user_data)
+
+		elif(choice == 2):
+
+			db_ref_string = 'members/students/%(year)s/%(category)s/%(name)s'
+			blob_ref_String = 'members/students/%(year)s/%(category)s/%(name)s'
+
+			name = raw_input("\nEnter student name : ")
+			year = raw_input("Enter student admission year : ")
+			email = raw_input("Enter student email : ")
+			linkedin = raw_input("Enter linkedin profile : ")
+			file_dir = raw_input("Enter path to image file : ")
+
+			ch = raw_input("Enter 1 for BTech, 2 for MTech and 3 for MCA : ")
+			ch = int(ch)
+
+			if ch == 1:
+				category = 'btech'
+			elif ch == 2:
+				category = 'mtech'
+			else:	
+				category = 'mca'
+
+			userdata = {
+				'name': name,
+				'email':email,
+				'linkedin':linkedin,
+				'img': db_ref_string % {'year': year, 'category': category, 'name': name}	
+			}
+
+			blob = bucket.blob(blob_ref_String % {'year': year, 'category': category, 'name': name})
+			blob.upload_from_filename(file_dir)
+
+			db_ref = db.reference(db_ref_string % {'year': year, 'category': category, 'name': name})
+			db_ref.set(userdata)
+
+		elif(choice == 3):
+			return;
+		else:
+			print "Invalid input"
+
+
+
+
+
 print ("Welcome to the Admin console!\n\n")
 
 print ("Enter 1 to edit Home Page")
 print ("Enter 2 to edit About Page")
+print ("Enter 3 to edit Members Page")
 
 choice = raw_input()
 choice = int(choice)
@@ -124,3 +202,5 @@ if(choice == 1):
 	edit_home()
 elif(choice == 2):
 	edit_about()
+elif(choice == 3):
+	edit_members()
