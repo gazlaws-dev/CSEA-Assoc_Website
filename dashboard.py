@@ -186,6 +186,44 @@ def edit_members():
 
 
 
+def edit_activity():
+
+	db_ref_string = 'activities/%s'
+	blob_ref_string = 'activities/%s'
+
+	title = raw_input("\nEnter activity title : ")
+	short_desc = raw_input("Enter short decsription : ")
+	long_desc = raw_input("Enter long description : ")
+	date = raw_input("Enter date : ")
+	file_dir = raw_input("Enter path to image : ")
+	
+	choice = raw_input("Enter 1 for Course/Workshop, 2 for talk or 3 for others : ")
+	choice = int(choice)
+
+	category = 'others'
+
+	if(choice == 1):
+		category = 'workshop'
+	elif(choice == 2):
+		category = 'talk'
+
+	data = {
+		'title' : title,
+		'short_desc' : short_desc,
+		'long_desc' : long_desc,
+		'date' : date,
+		'category' : category,
+		'img' : blob_ref_string % title
+
+	}
+
+	blob = bucket.blob(blob_ref_string % title)
+	blob.upload_from_filename(file_dir)
+
+	db_ref = db.reference(db_ref_string % title)
+	db_ref.set(data
+
+
 
 
 print ("Welcome to the Admin console!\n\n")
@@ -193,6 +231,7 @@ print ("Welcome to the Admin console!\n\n")
 print ("Enter 1 to edit Home Page")
 print ("Enter 2 to edit About Page")
 print ("Enter 3 to edit Members Page")
+print ("Enter 4 to edit Activities Page")
 
 choice = raw_input()
 choice = int(choice)
@@ -204,3 +243,5 @@ elif(choice == 2):
 	edit_about()
 elif(choice == 3):
 	edit_members()
+elif(choice == 4):
+	edit_activity()
