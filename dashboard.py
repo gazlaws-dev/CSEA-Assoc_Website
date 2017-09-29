@@ -194,12 +194,13 @@ def edit_activity():
 	title = raw_input("\nEnter activity title : ")
 	short_desc = raw_input("Enter short decsription : ")
 	long_desc = raw_input("Enter long description : ")
-	date = raw_input("Enter date : ")
+	date = raw_input("Enter date (dd/mm/yyyy) : ")
 	file_dir = raw_input("Enter path to image : ")
 	
 	choice = raw_input("Enter 1 for Course/Workshop, 2 for talk or 3 for others : ")
 	choice = int(choice)
 
+	date = date.split('/')
 	category = 'others'
 
 	if(choice == 1):
@@ -211,7 +212,11 @@ def edit_activity():
 		'title' : title,
 		'short_desc' : short_desc,
 		'long_desc' : long_desc,
-		'date' : date,
+		'date' : {
+					'day': date[0],
+					'month' : date[1],
+					'year' : date[2]
+				},
 		'category' : category,
 		'img' : blob_ref_string % title
 
@@ -221,7 +226,50 @@ def edit_activity():
 	blob.upload_from_filename(file_dir)
 
 	db_ref = db.reference(db_ref_string % title)
-	db_ref.set(data
+	db_ref.set(data)
+
+
+def edit_gallery():
+
+	db_ref_string = 'gallery/%s'
+	blob_ref_string = 'gallery/%s/%s'
+
+	title = raw_input("\nEnter activity title : ")
+	date = raw_input("Enter date (dd/mm/yyyy) : ")
+	img_count = raw_input("Enter image count : ")
+	drive_link = raw_input("Enter drive link : ")
+
+	date = date.split('/')
+
+	data = {
+		'title' : title,
+		'date' : {
+					'day': date[0],
+					'month' : date[1],
+					'year' : date[2]
+				},
+		'img_count' : img_count,
+		'drive_link' : drive_link
+	}
+
+
+	img_count = int(img_count)
+	i = 1
+	img = {}
+
+	while(i <= img_count):
+		img_dir = raw_input("Enter path to image %s : " %str(i))
+		blob = bucket.blob(blob_ref_string % (title,str(i)) )
+		blob.upload_from_filename(img_dir)
+		img[i] = blob_ref_string % (title,str(i))
+		i = i + 1;
+
+	data['img'] = img
+
+	db_ref = db.reference(db_ref_string % title)
+	db_ref.set(data)
+
+
 
 
 
@@ -232,6 +280,7 @@ print ("Enter 1 to edit Home Page")
 print ("Enter 2 to edit About Page")
 print ("Enter 3 to edit Members Page")
 print ("Enter 4 to edit Activities Page")
+print ("Enter 5 to edit Gallery")
 
 choice = raw_input()
 choice = int(choice)
@@ -245,3 +294,5 @@ elif(choice == 3):
 	edit_members()
 elif(choice == 4):
 	edit_activity()
+elif(choice == 5):
+	edit_gallery()
