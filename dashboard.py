@@ -3,10 +3,10 @@ from firebase_admin import credentials
 from firebase_admin import db
 from firebase_admin import storage
 
-cred = credentials.Certificate('./admin.json')
+cred = credentials.Certificate('./admin-csea.json')
 firebase_admin.initialize_app(cred, {
-    'databaseURL': 'https://hello-firebase-847fe.firebaseio.com',
-    'storageBucket': 'hello-firebase-847fe.appspot.com'
+    'databaseURL': 'https://cseanitcweb.firebaseio.com',
+    'storageBucket': 'cseanitcweb.appspot.com'
 })
 
 bucket = storage.bucket()
