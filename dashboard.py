@@ -188,8 +188,8 @@ def edit_members():
 
 def edit_activity():
 
-	db_ref_string = 'activities/%s'
-	blob_ref_string = 'activities/%s'
+	db_ref_string = 'activities/%s/%s'
+	blob_ref_string = 'activities/%s/%s'
 
 	title = raw_input("\nEnter activity title : ")
 	short_desc = raw_input("Enter short decsription : ")
@@ -218,21 +218,21 @@ def edit_activity():
 					'year' : date[2]
 				},
 		'category' : category,
-		'img' : blob_ref_string % title
+		'img' : blob_ref_string % (date[2],title)
 
 	}
 
-	blob = bucket.blob(blob_ref_string % title)
+	blob = bucket.blob(blob_ref_string % (date[2],title) )
 	blob.upload_from_filename(file_dir)
 
-	db_ref = db.reference(db_ref_string % title)
+	db_ref = db.reference(db_ref_string % (date[2],title) )
 	db_ref.set(data)
 
 
 def edit_gallery():
 
-	db_ref_string = 'gallery/%s'
-	blob_ref_string = 'gallery/%s/%s'
+	db_ref_string = 'gallery/%s/%s'                                # gallery/<year>/<event_name>
+	blob_ref_string = 'gallery/%s/%s/%s'                           # gallery/<year>/<event_name>/<img_no>
 
 	title = raw_input("\nEnter activity title : ")
 	date = raw_input("Enter date (dd/mm/yyyy) : ")
@@ -259,16 +259,20 @@ def edit_gallery():
 
 	while(i <= img_count):
 		img_dir = raw_input("Enter path to image %s : " %str(i))
-		blob = bucket.blob(blob_ref_string % (title,str(i)) )
+		blob = bucket.blob(blob_ref_string % (date[2],title,str(i)) )
 		blob.upload_from_filename(img_dir)
-		img[i] = blob_ref_string % (title,str(i))
+		img[i] = blob_ref_string % (date[2],title,str(i))
 		i = i + 1;
 
 	data['img'] = img
 
-	db_ref = db.reference(db_ref_string % title)
+	db_ref = db.reference(db_ref_string % (date[2], title) )
 	db_ref.set(data)
 
+
+
+
+#============================================   MAIN FUNCTION STARTS HERE ===================================================
 
 
 
