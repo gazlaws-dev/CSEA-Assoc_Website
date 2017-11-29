@@ -1,12 +1,24 @@
+"""
+Created on Tue Nov 28 20:59:55 2017
+
+@author: abhiram haridas (abhiramharidas@gmail.com)
+"""
+
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
 from firebase_admin import storage
 
-cred = credentials.Certificate('./admin-csea.json')
+import dash_utils
+
+#cred = credentials.Certificate('./admin-csea.json')
+cred = credentials.Certificate('./admin.json')
+
 firebase_admin.initialize_app(cred, {
-    'databaseURL': 'https://cseanitcweb.firebaseio.com',
-    'storageBucket': 'cseanitcweb.appspot.com'
+    #'databaseURL': 'https://cseanitcweb.firebaseio.com',
+    #'storageBucket': 'cseanitcweb.appspot.com'
+    'databaseURL': 'https://hello-firebase-847fe.firebaseio.com',
+    'storageBucket': 'hello-firebase-847fe.appspot.com'    
 })
 
 bucket = storage.bucket()
@@ -20,7 +32,13 @@ def edit_home():
 		print("Enter 3 to exit")
 	
 		choice = raw_input()
-		choice = int(choice)
+
+		try:
+			choice = int(choice)
+		except ValueError:
+			print "\nError! Invalid input.\n"
+			continue
+			
 
 		if(choice == 1):
 
@@ -30,6 +48,22 @@ def edit_home():
 			file1 = raw_input("Enter path to image1 : ")
 			file2 = raw_input("Enter path to image2 : ")
 			file3 = raw_input("Enter path to image3 : ")
+
+			error_flag, error_msg = dash_utils.file_exist(file1)
+			if (error_flag == 1):
+				print "\nError! Path to image1 does not exist.\n"
+				continue
+
+			error_flag, error_msg = dash_utils.file_exist(file2)
+			if (error_flag == 1):
+				print "\nError! Path to image2 does not exist.\n"
+				continue
+
+			error_flag, error_msg = dash_utils.file_exist(file3)
+			if (error_flag == 1):
+				print "\nError! Path to image3 does not exist.\n"
+				continue
+
 			
 			blob = bucket.blob(blob_ref_string % "1")
 			blob.upload_from_filename(file1)
@@ -83,7 +117,12 @@ def edit_about():
 		print("Enter 5 to exit")
 	
 		choice = raw_input()
-		choice = int(choice)	
+		
+		try:
+			choice = int(choice)
+		except ValueError:
+			print "\nError! Invalid input.\n"
+			continue	
 	
 		if(choice == 1):
 			html = raw_input('Enter about html : ')
@@ -121,7 +160,12 @@ def edit_members():
 		print ("Enter 3 to exit")
 
 		choice = raw_input()
-		choice = int(choice)
+		
+		try:
+			choice = int(choice)
+		except ValueError:
+			print "\nError! Invalid input.\n"
+			continue
 
 		if(choice == 1):
 
@@ -131,6 +175,13 @@ def edit_members():
 			name = raw_input("\nEnter name : ")
 			email = raw_input("Enter email : ")
 			file_dir = raw_input("Enter path to image : ")
+
+			error_flag, error_msg = dash_utils.file_exist(file_dir)
+			if (error_flag == 1):
+				print error_msg
+				continue
+
+
 
 			blob = bucket.blob(blob_ref_string % name)
 			blob.upload_from_filename(file_dir) 
@@ -157,7 +208,16 @@ def edit_members():
 			file_dir = raw_input("Enter path to image file : ")
 
 			ch = raw_input("Enter 1 for BTech, 2 for MTech and 3 for MCA : ")
-			ch = int(ch)
+			try:
+				ch = int(ch)
+			except ValueError:
+				print "\nError! Invalid input.\n"
+				continue
+
+			error_flag, error_msg = dash_utils.check_year(year)
+			if (error_flag == 1):
+				print error_msg
+				continue
 
 			if ch == 1:
 				category = 'btech'
@@ -172,6 +232,12 @@ def edit_members():
 				'linkedin':linkedin,
 				'img': db_ref_string % {'year': year, 'category': category, 'name': name}	
 			}
+
+			error_flag, error_msg = dash_utils.file_exist(file_dir)
+			if (error_flag == 1):
+				print error_msg
+				continue
+
 
 			blob = bucket.blob(blob_ref_String % {'year': year, 'category': category, 'name': name})
 			blob.upload_from_filename(file_dir)
@@ -198,7 +264,18 @@ def edit_activity():
 	file_dir = raw_input("Enter path to image : ")
 	
 	choice = raw_input("Enter 1 for Course/Workshop, 2 for talk or 3 for others : ")
-	choice = int(choice)
+	
+	try:
+		choice = int(choice)
+	except ValueError:
+		print "\nError! Invalid input.\n"
+		return
+
+	error_flag, error_msg = dash_utils.check_date(date)
+	if (error_flag == 1):
+		print error_msg
+		return
+
 
 	date = date.split('/')
 	category = 'others'
@@ -222,6 +299,12 @@ def edit_activity():
 
 	}
 
+	error_flag, error_msg = dash_utils.file_exist(file_dir)
+	if (error_flag == 1):
+		print error_msg
+		return
+
+
 	blob = bucket.blob(blob_ref_string % (date[2],title) )
 	blob.upload_from_filename(file_dir)
 
@@ -238,6 +321,11 @@ def edit_gallery():
 	date = raw_input("Enter date (dd/mm/yyyy) : ")
 	img_count = raw_input("Enter image count : ")
 	drive_link = raw_input("Enter drive link : ")
+
+	error_flag, error_msg = dash_utils.check_date(date)
+	if (error_flag == 1):
+		print error_msg
+		return
 
 	date = date.split('/')
 
@@ -259,6 +347,13 @@ def edit_gallery():
 
 	while(i <= img_count):
 		img_dir = raw_input("Enter path to image %s : " %str(i))
+
+		error_flag, error_msg = dash_utils.file_exist(img_dir)
+		if (error_flag == 1):
+			print error_msg
+			continue
+
+
 		blob = bucket.blob(blob_ref_string % (date[2],title,str(i)) )
 		blob.upload_from_filename(img_dir)
 		img[i] = blob_ref_string % (date[2],title,str(i))
@@ -275,28 +370,39 @@ def edit_gallery():
 #============================================   MAIN FUNCTION STARTS HERE ===================================================
 
 
-
-
-
+choice = 0
 print ("Welcome to the Admin console!\n\n")
 
-print ("Enter 1 to edit Home Page")
-print ("Enter 2 to edit About Page")
-print ("Enter 3 to edit Members Page")
-print ("Enter 4 to edit Activities Page")
-print ("Enter 5 to edit Gallery")
-
-choice = raw_input()
-choice = int(choice)
-
-
-if(choice == 1):
-	edit_home()
-elif(choice == 2):
-	edit_about()
-elif(choice == 3):
-	edit_members()
-elif(choice == 4):
-	edit_activity()
-elif(choice == 5):
-	edit_gallery()
+while(choice != 6):	
+	
+	print ("Enter 1 to edit Home Page")
+	print ("Enter 2 to edit About Page")
+	print ("Enter 3 to edit Members Page")
+	print ("Enter 4 to edit Activities Page")
+	print ("Enter 5 to edit Gallery")
+	print ("Enter 6 to exit")
+	
+	choice = raw_input()
+	
+	try:
+		choice = int(choice)
+	except ValueError:
+		print "\nError! Invalid input.\n"
+		choice = 0
+		continue
+	
+	
+	if(choice == 1):
+		edit_home()
+	elif(choice == 2):
+		edit_about()
+	elif(choice == 3):
+		edit_members()
+	elif(choice == 4):
+		edit_activity()
+	elif(choice == 5):
+		edit_gallery()
+	elif(choice == 6):
+		continue
+	else:
+		print "\nError! Invalid input.\n"
