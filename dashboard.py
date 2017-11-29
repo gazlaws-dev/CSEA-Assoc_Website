@@ -9,6 +9,7 @@ from firebase_admin import credentials
 from firebase_admin import db
 from firebase_admin import storage
 
+import sys
 import dash_utils
 
 #cred = credentials.Certificate('./admin-csea.json')
@@ -22,6 +23,12 @@ firebase_admin.initialize_app(cred, {
 })
 
 bucket = storage.bucket()
+
+
+def network_error():
+
+	print "\nNetwork communcation issues. Check your internet connection and try again.\n"
+	sys.exit()
 
 def edit_home():
 	
@@ -65,24 +72,35 @@ def edit_home():
 				continue
 
 			
-			blob = bucket.blob(blob_ref_string % "1")
-			blob.upload_from_filename(file1)
+			try:
+				blob = bucket.blob(blob_ref_string % "1")
+				blob.upload_from_filename(file1)
+			except:
+				network_error()
+			
+			try:
+				blob = bucket.blob(blob_ref_string % "2")
+				blob.upload_from_filename(file2)
+			except:
+				network_error()
 
-			blob = bucket.blob(blob_ref_string % "2")
-			blob.upload_from_filename(file2)
+			try:
+				blob = bucket.blob(blob_ref_string % "3")
+				blob.upload_from_filename(file3)
+			except:
+				network_error()
 
-			blob = bucket.blob(blob_ref_string % "3")
-			blob.upload_from_filename(file3)
+			try:
+				db_ref = db.reference(db_ref_string)
+			
+				slider_data = {
+					'1': blob_ref_string % "1",
+					'2': blob_ref_string % "2",
+					'3': blob_ref_string % "3"
+				}
 
-			db_ref = db.reference(db_ref_string)
-
-			slider_data = {
-				'1': blob_ref_string % "1",
-				'2': blob_ref_string % "2",
-				'3': blob_ref_string % "3"
-			}
-
-			db_ref.set(slider_data)
+			except:
+				network_error()
 
 		elif(choice == 2):
 
@@ -90,10 +108,13 @@ def edit_home():
 
 			html = raw_input("Enter right pane html : ")
 			
-			db_ref = db.reference(db_ref_string)
-			db_ref.update({
-				'right_pane' : html
-				})
+			try:
+				db_ref = db.reference(db_ref_string)
+				db_ref.update({
+					'right_pane' : html
+					})
+			except:
+				network_error()
 
 		elif(choice == 3):
 			return
@@ -106,7 +127,11 @@ def edit_home():
 def edit_about():
 
 	db_ref_string = 'about'
-	db_ref = db.reference(db_ref_string)
+
+	try:
+		db_ref = db.reference(db_ref_string)
+	except:
+		network_error()
 
 	while(1):
 
@@ -126,24 +151,44 @@ def edit_about():
 	
 		if(choice == 1):
 			html = raw_input('Enter about html : ')
-			db_ref.update({
-				'about' : html
-				})
+			
+			try:
+				db_ref.update({
+					'about' : html
+					})
+			except:
+				network_error()
+
 		elif(choice == 2):
 			html = raw_input('Enter vision html : ')
-			db_ref.update({
-				'vision' : html
-				})
+
+			try:
+				db_ref.update({
+					'vision' : html
+					})
+			except:
+				network_error()
+
 		elif(choice == 3):
 			html = raw_input('Enter how we work html : ')
-			db_ref.update({
-				'how' : html
-				})
+			
+			try:
+				db_ref.update({
+					'how' : html
+					})
+			except:
+				network_error()
+
 		elif(choice == 4):
-			html = raw_input('Enter join us html : ')
-			db_ref.update({
-				'join_us' : html
-				})
+			html = raw_input('Enter join us html : ')			
+
+			try:
+				db_ref.update({
+					'join_us' : html
+					})
+			except:
+				network_error()
+
 		elif(choice == 5):
 			return
 		else :
@@ -181,20 +226,21 @@ def edit_members():
 				print error_msg
 				continue
 
-
-
-			blob = bucket.blob(blob_ref_string % name)
-			blob.upload_from_filename(file_dir) 
-
-			db_ref = db.reference(db_ref_string % name)
-
-			user_data = {
-				'nameof' : name,
-				'email' : email,
-				'img' : blob_ref_string % name
-			}
-
-			db_ref.set(user_data)
+			try:
+				blob = bucket.blob(blob_ref_string % name)
+				blob.upload_from_filename(file_dir) 
+	
+				db_ref = db.reference(db_ref_string % name)
+	
+				user_data = {
+					'nameof' : name,
+					'email' : email,
+					'img' : blob_ref_string % name
+				}
+	
+				db_ref.set(user_data)
+			except:
+				network_error()
 
 		elif(choice == 2):
 
@@ -238,12 +284,14 @@ def edit_members():
 				print error_msg
 				continue
 
-
-			blob = bucket.blob(blob_ref_String % {'year': year, 'category': category, 'name': name})
-			blob.upload_from_filename(file_dir)
-
-			db_ref = db.reference(db_ref_string % {'year': year, 'category': category, 'name': name})
-			db_ref.set(userdata)
+			try:
+				blob = bucket.blob(blob_ref_String % {'year': year, 'category': category, 'name': name})
+				blob.upload_from_filename(file_dir)
+	
+				db_ref = db.reference(db_ref_string % {'year': year, 'category': category, 'name': name})
+				db_ref.set(userdata)
+			except:
+				network_error()
 
 		elif(choice == 3):
 			return;
@@ -304,12 +352,15 @@ def edit_activity():
 		print error_msg
 		return
 
+	try:
+		blob = bucket.blob(blob_ref_string % (date[2],title) )
+		blob.upload_from_filename(file_dir)
+	
+		db_ref = db.reference(db_ref_string % (date[2],title) )
+		db_ref.set(data)
+	except:
+		network_error()
 
-	blob = bucket.blob(blob_ref_string % (date[2],title) )
-	blob.upload_from_filename(file_dir)
-
-	db_ref = db.reference(db_ref_string % (date[2],title) )
-	db_ref.set(data)
 
 
 def edit_gallery():
@@ -353,17 +404,22 @@ def edit_gallery():
 			print error_msg
 			continue
 
+		try:
+			blob = bucket.blob(blob_ref_string % (date[2],title,str(i)) )
+			blob.upload_from_filename(img_dir)
+		except:
+			network_error()
 
-		blob = bucket.blob(blob_ref_string % (date[2],title,str(i)) )
-		blob.upload_from_filename(img_dir)
 		img[i] = blob_ref_string % (date[2],title,str(i))
 		i = i + 1;
 
 	data['img'] = img
 
-	db_ref = db.reference(db_ref_string % (date[2], title) )
-	db_ref.set(data)
-
+	try:
+		db_ref = db.reference(db_ref_string % (date[2], title) )
+		db_ref.set(data)
+	except:
+		network_error()
 
 
 
