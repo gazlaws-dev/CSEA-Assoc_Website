@@ -36,7 +36,7 @@ def check_date(date_string):
 		error_flag = 1;
 		error_msg = "\nError! Invalid date string. Please follow the specified format.\n"
 		return (error_flag, error_msg)
-		
+
 	t = dates[0];                                                                               # validating day
 
 	try:
@@ -107,6 +107,33 @@ def check_year(year_str):
 
 
 
+
+
+
+#========================================== Functions executed when executed as main file ========================================
+
+def remove_linebreaks(file_name):
+
+	error_flag, error_msg = file_exist(file_name)
+
+	if error_flag == 1:
+		print error_msg
+		return None
+
+	with open(file_name) as myfile:
+		data = myfile.read()
+
+
+	return data.replace('\n','').replace('\r','')
+
+
+if __name__ == '__main__':
+	
+	file_name = raw_input("Enter path to file : ")
+	data_str = remove_linebreaks(file_name)
+	
+	if data_str is not None:
+		print data_str
 
 
 
