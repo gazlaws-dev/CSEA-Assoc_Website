@@ -10,16 +10,17 @@ from firebase_admin import db
 from firebase_admin import storage
 
 import sys
+import traceback
 import dash_utils
 
-#cred = credentials.Certificate('./admin-csea.json')
-cred = credentials.Certificate('./admin.json')
+cred = credentials.Certificate('./admin-csea.json')
+#cred = credentials.Certificate('./admin.json')
 
 firebase_admin.initialize_app(cred, {
-    #'databaseURL': 'https://cseanitcweb.firebaseio.com',
-    #'storageBucket': 'cseanitcweb.appspot.com'
-    'databaseURL': 'https://hello-firebase-847fe.firebaseio.com',
-    'storageBucket': 'hello-firebase-847fe.appspot.com'    
+    'databaseURL': 'https://cseanitcweb.firebaseio.com',
+    'storageBucket': 'cseanitcweb.appspot.com'
+    #'databaseURL': 'https://hello-firebase-847fe.firebaseio.com',
+    #'storageBucket': 'hello-firebase-847fe.appspot.com'    
 })
 
 bucket = storage.bucket()
@@ -27,7 +28,12 @@ bucket = storage.bucket()
 
 def network_error():
 
-	print "\nNetwork communcation issues. Check your internet connection and try again.\n"
+	print "\nUnable to write data  Check your internet connection and try again. If connection is alright modify source to view stacktrace.\n"
+	
+	# print "\n The traceback for the error occurred\n"    *********** Uncomment this part to view stack trace of the error ***********
+	# traceback.print_exc()
+	# print "\n\n"
+
 	sys.exit()
 
 def edit_home():
@@ -244,8 +250,8 @@ def edit_members():
 
 		elif(choice == 2):
 
-			db_ref_string = 'members/students/%(year)s/%(category)s/%(name)s'
-			blob_ref_String = 'members/students/%(year)s/%(category)s/%(name)s'
+			db_ref_string = 'members/students/%(category)s/%(year)s/%(name)s'
+			blob_ref_String = 'members/students/%(category)s/%(year)s/%(name)s'
 
 			name = raw_input("\nEnter student name : ")
 			year = raw_input("Enter student admission year : ")
@@ -284,14 +290,16 @@ def edit_members():
 				print error_msg
 				continue
 
-			try:
+			try:			
 				blob = bucket.blob(blob_ref_String % {'year': year, 'category': category, 'name': name})
-				blob.upload_from_filename(file_dir)
-	
+				blob.upload_from_filename(file_dir)	
+				
 				db_ref = db.reference(db_ref_string % {'year': year, 'category': category, 'name': name})
 				db_ref.set(userdata)
 			except:
 				network_error()
+				
+			
 
 		elif(choice == 3):
 			return;
@@ -360,6 +368,7 @@ def edit_activity():
 		db_ref.set(data)
 	except:
 		network_error()
+
 
 
 
