@@ -106,8 +106,21 @@ def check_year(year_str):
 	return (error_flag, error_msg)
 
 
+def check_name(name_str):
 
 
+	error_flag = 0
+	error_msg = ""
+
+	name = name_str.replace(' ','')
+
+	if not name.isalpha():
+
+		error_flag = 1
+		error_msg = "\nError! Name should have alphabets and spaces only.\n"
+
+	return (error_flag, error_msg)
+	
 
 
 #========================================== Functions executed when executed as main file ========================================

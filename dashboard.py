@@ -227,6 +227,11 @@ def edit_members():
 			email = raw_input("Enter email : ")
 			file_dir = raw_input("Enter path to image : ")
 
+			error_flag, error_msg = dash_utils.check_name(name)
+			if (error_flag == 1):
+				print error_msg
+				continue
+
 			error_flag, error_msg = dash_utils.file_exist(file_dir)
 			if (error_flag == 1):
 				print error_msg
@@ -264,6 +269,11 @@ def edit_members():
 				ch = int(ch)
 			except ValueError:
 				print "\nError! Invalid input.\n"
+				continue
+
+			error_flag, error_msg = dash_utils.check_name(name)
+			if (error_flag == 1):
+				print error_msg
 				continue
 
 			error_flag, error_msg = dash_utils.check_year(year)
@@ -327,6 +337,11 @@ def edit_activity():
 		print "\nError! Invalid input.\n"
 		return
 
+	error_flag, error_msg = dash_utils.check_name(title)
+	if (error_flag == 1):
+		print error_msg
+		return
+
 	error_flag, error_msg = dash_utils.check_date(date)
 	if (error_flag == 1):
 		print error_msg
@@ -381,6 +396,11 @@ def edit_gallery():
 	date = raw_input("Enter date (dd/mm/yyyy) : ")
 	img_count = raw_input("Enter image count : ")
 	drive_link = raw_input("Enter drive link : ")
+
+	error_flag, error_msg = dash_utils.check_name(title)
+	if (error_flag == 1):
+		print error_msg
+		return
 
 	error_flag, error_msg = dash_utils.check_date(date)
 	if (error_flag == 1):
