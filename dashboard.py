@@ -11,6 +11,8 @@ from firebase_admin import storage
 
 import sys
 import traceback
+import json
+from datetime import datetime
 import dash_utils
 
 cred = credentials.Certificate('./admin-csea.json')
@@ -451,6 +453,74 @@ def edit_gallery():
 		network_error()
 
 
+def backup_restore_html():
+
+	print("\nEnter 1 to backup HTML fields")
+	print("Enter 2 restore HTML fileds")
+	print("Enter 3 to exit")	
+	
+	choice = raw_input()
+	
+	try:
+		choice = int(choice)
+	except ValueError:
+		print "\nError! Invalid input.\n"
+		return
+
+	if choice == 1:
+
+		right_pane_ref = db.reference('home/right_pane')
+		about_ref = db.reference('about')
+
+		try:
+			right_pane = right_pane_ref.get()
+			about = about_ref.get()
+			date = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+		except:
+			network_error()
+
+		backup = {
+			'right_pane' : right_pane,
+			'about' : about,
+			'date' : date
+			};
+
+		try:
+			with open('./backup_html.txt','w') as backup_file:
+				json.dump(backup,backup_file)
+		except:
+			print ("\nError! Could not create backup file. Make sure working directory is read-only.\n\n")
+			return
+
+
+		print("\nBackup written to backup_html.txt %s\n\n" % date)
+
+	elif choice == 2:
+
+		try:
+			with open('./backup_html.txt','r') as backup_file:
+				backup = json.load(backup_file)
+		except:
+			print ("\nError! Backup file appears to be missing or corrupted.\n\n")
+			return
+
+		try:
+			right_pane_ref = db.reference('home/right_pane')
+			about_ref = db.reference('about')
+			right_pane_ref.set(backup['right_pane'])
+			about_ref.set(backup['about'])
+		except:
+			network_error()
+
+		print("\nRestored backup from %s\n\n" % backup['date'])
+
+	else :
+		print("Invalid Input")
+
+
+
+
+
 
 #============================================   MAIN FUNCTION STARTS HERE ===================================================
 
@@ -458,14 +528,15 @@ def edit_gallery():
 choice = 0
 print ("Welcome to the Admin console!\n\n")
 
-while(choice != 6):	
+while(choice != 7):	
 	
 	print ("Enter 1 to edit Home Page")
 	print ("Enter 2 to edit About Page")
 	print ("Enter 3 to edit Members Page")
 	print ("Enter 4 to edit Activities Page")
 	print ("Enter 5 to edit Gallery")
-	print ("Enter 6 to exit")
+	print ("Enter 6 to backup/restore HTML fields")
+	print ("Enter 7 to exit")
 	
 	choice = raw_input()
 	
@@ -488,6 +559,8 @@ while(choice != 6):
 	elif(choice == 5):
 		edit_gallery()
 	elif(choice == 6):
-		continue
+		backup_restore_html()
+	elif(choice == 7):
+		continue;
 	else:
 		print "\nError! Invalid input.\n"
