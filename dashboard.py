@@ -43,8 +43,9 @@ def edit_home():
 	while(1):
 
 		print("\nEnter 1 to edit slider images")
-		print("Enter 2 edit right pane")
-		print("Enter 3 to exit")
+		print("Enter 2 to edit right pane")
+		print("Enter 3 to edit center pane ")
+		print("Enter 4 to exit")
 	
 		choice = raw_input()
 
@@ -125,6 +126,20 @@ def edit_home():
 				network_error()
 
 		elif(choice == 3):
+
+			db_ref_string = 'home'
+
+			html = raw_input("Enter center pane html : ")
+			
+			try:
+				db_ref = db.reference(db_ref_string)
+				db_ref.update({
+					'center_pane' : html
+					})
+			except:
+				network_error()
+			
+		elif(choice == 4):
 			return
 
 		else :
