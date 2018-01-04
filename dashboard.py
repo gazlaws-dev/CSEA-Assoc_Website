@@ -306,7 +306,7 @@ def edit_members():
 				category = 'mca'
 
 			userdata = {
-				'name': name,
+				'nameof': name,
 				'email':email,
 				'linkedin':linkedin,
 				'img': db_ref_string % {'year': year, 'category': category, 'name': name}	
