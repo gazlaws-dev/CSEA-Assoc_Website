@@ -30,9 +30,9 @@ bucket = storage.bucket()
 
 def network_error():
 
-	print "\nUnable to write data  Check your internet connection and try again. If connection is alright modify source to view stacktrace.\n"
+	print "\nUnable to read/write data  Check your internet connection and try again. If connection is alright modify source to view stacktrace.\n"
 	
-	# print "\n The traceback for the error occurred\n"    *********** Uncomment this part to view stack trace of the error ***********
+	# print "\n The traceback for the error occurred\n"    #*********** Uncomment this part to view stack trace of the error ***********
 	# traceback.print_exc()
 	# print "\n\n"
 
@@ -467,6 +467,18 @@ def edit_gallery():
 	except:
 		network_error()
 
+def edit_notice():
+
+	db_ref_string = 'notice_box'
+	html = raw_input("\nEnter notice box html : ")
+
+	try:
+		db_ref = db.reference(db_ref_string)
+		db_ref.set(html)
+	except:
+		network_error()
+
+
 
 def backup_restore_html():
 
@@ -484,18 +496,25 @@ def backup_restore_html():
 
 	if choice == 1:
 
-		right_pane_ref = db.reference('home/right_pane')
-		about_ref = db.reference('about')
-
 		try:
+			notice_box_ref = db.reference('notice_box')
+			right_pane_ref = db.reference('home/right_pane')
+			center_pane_ref = db.reference('home/center_pane')
+			about_ref = db.reference('about')
+
+			notice_box = notice_box_ref.get()
 			right_pane = right_pane_ref.get()
+			center_pane = center_pane_ref.get()
 			about = about_ref.get()
 			date = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+
 		except:
 			network_error()
 
 		backup = {
+			'notice_box' : notice_box,
 			'right_pane' : right_pane,
+			'center_pane' : center_pane,
 			'about' : about,
 			'date' : date
 			};
@@ -508,7 +527,7 @@ def backup_restore_html():
 			return
 
 
-		print("\nBackup written to backup_html.txt %s\n\n" % date)
+		print("\nBackup written to backup_html.txt on %s\n\n" % date)
 
 	elif choice == 2:
 
@@ -520,9 +539,14 @@ def backup_restore_html():
 			return
 
 		try:
+			notice_box_ref = db.reference('notice_box')
 			right_pane_ref = db.reference('home/right_pane')
+			center_pane_ref = db.reference('home/center_pane')
 			about_ref = db.reference('about')
+
+			notice_box_ref.set(backup['notice_box'])
 			right_pane_ref.set(backup['right_pane'])
+			center_pane_ref.set(backup['center_pane'])
 			about_ref.set(backup['about'])
 		except:
 			network_error()
@@ -543,15 +567,16 @@ def backup_restore_html():
 choice = 0
 print ("Welcome to the Admin console!\n\n")
 
-while(choice != 7):	
+while(choice != 8):	
 	
-	print ("Enter 1 to edit Home Page")
+	print ("\nEnter 1 to edit Home Page")
 	print ("Enter 2 to edit About Page")
 	print ("Enter 3 to edit Members Page")
 	print ("Enter 4 to edit Activities Page")
 	print ("Enter 5 to edit Gallery")
-	print ("Enter 6 to backup/restore HTML fields")
-	print ("Enter 7 to exit")
+	print ("Enter 6 to edit Notice HTML")
+	print ("Enter 7 to backup/restore HTML fields")
+	print ("Enter 8 to exit")
 	
 	choice = raw_input()
 	
@@ -574,8 +599,10 @@ while(choice != 7):
 	elif(choice == 5):
 		edit_gallery()
 	elif(choice == 6):
-		backup_restore_html()
+		edit_notice()
 	elif(choice == 7):
+		backup_restore_html()
+	elif(choice == 8):
 		continue;
 	else:
 		print "\nError! Invalid input.\n"
