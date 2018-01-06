@@ -450,6 +450,7 @@ def edit_gallery():
 	blob_ref_string = 'gallery/%s/%s/%s'                           # gallery/<year>/<event_name>/<img_no>
 
 	title = raw_input("\nEnter activity title : ")
+	short_desc = raw_input("Enter short decsription : ")
 	date = raw_input("Enter date (dd/mm/yyyy) : ")
 	img_count = raw_input("Enter image count : ")
 	drive_link = raw_input("Enter drive link : ")
@@ -468,6 +469,7 @@ def edit_gallery():
 
 	data = {
 		'title' : title,
+		'short_desc' : short_desc,
 		'date' : {
 					'day': date[0],
 					'month' : date[1],
