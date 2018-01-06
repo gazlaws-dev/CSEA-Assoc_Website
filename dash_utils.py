@@ -114,10 +114,10 @@ def check_name(name_str):
 
 	name = name_str.replace(' ','')
 
-	if not name.isalpha():
+	if not name.isalnum():
 
 		error_flag = 1
-		error_msg = "\nError! Name should have alphabets and spaces only.\n"
+		error_msg = "\nError! Name/title should have alphabets and spaces only.\n"
 
 	return (error_flag, error_msg)
 	

@@ -45,7 +45,8 @@ def edit_home():
 		print("\nEnter 1 to edit slider images")
 		print("Enter 2 to edit right pane")
 		print("Enter 3 to edit center pane ")
-		print("Enter 4 to exit")
+		print("Enter 4 to add upcoming event")
+		print("Enter 5 to exit")
 	
 		choice = raw_input()
 
@@ -138,8 +139,47 @@ def edit_home():
 					})
 			except:
 				network_error()
-			
+
 		elif(choice == 4):
+
+			db_ref_string = 'home/upcoming/%s/%s'         # home/upcoming/year/title
+
+			title = raw_input("\nEnter activity title : ")
+			date = raw_input("Enter date (dd/mm/yyyy) : ")
+
+			error_flag, error_msg = dash_utils.check_name(title)
+			if (error_flag == 1):
+				print error_msg
+				return
+		
+			error_flag, error_msg = dash_utils.check_date(date)
+			if (error_flag == 1):
+				print error_msg
+				return
+
+
+			date = date.split('/')
+
+			data = {
+
+				'title': title,
+				'date' : {
+					'day': date[0],
+					'month' : date[1],
+					'year' : date[2]
+				}
+			}
+
+			try:
+				db_ref = db.reference (db_ref_string % (date[2],title))
+				db_ref.set(data)
+			except:
+				network_error
+
+			print "\nEvent added successfully\n"
+
+			
+		elif(choice == 5):
 			return
 
 		else :
