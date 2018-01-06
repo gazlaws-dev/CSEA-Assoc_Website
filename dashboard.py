@@ -145,6 +145,7 @@ def edit_home():
 			db_ref_string = 'home/upcoming/%s/%s'         # home/upcoming/year/title
 
 			title = raw_input("\nEnter activity title : ")
+			short_desc = raw_input("Enter very short description (max 10 words) : ")
 			date = raw_input("Enter date (dd/mm/yyyy) : ")
 
 			error_flag, error_msg = dash_utils.check_name(title)
@@ -163,6 +164,7 @@ def edit_home():
 			data = {
 
 				'title': title,
+				'short_desc': short_desc,
 				'date' : {
 					'day': date[0],
 					'month' : date[1],
