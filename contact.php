@@ -35,8 +35,8 @@
 								<div class="info_holder">
 										<ul>
 												<li><img src="img/location.png" width="25px" height="25px"/><span>Department of CSE, NIT Calicut</span></li>
-												<li><img src="https://cdn1.iconfinder.com/data/icons/freeline/32/account_friend_human_man_member_person_profile_user_users-128.png" width="25px" height="25px"/><span>Gedala Kumar Tej</span></li>
-												<li><img src="img/phone.png" width="25px" height="25px"/><span>+91 790 799 4427</span></li>
+												<li><img src="https://cdn1.iconfinder.com/data/icons/freeline/32/account_friend_human_man_member_person_profile_user_users-128.png" width="25px" height="25px"/><span>Abhiram Haridas</span></li>
+												<li><img src="img/phone.png" width="25px" height="25px"/><span>+91 8281865968</span></li>
 												<li><img src="img/email.png" width="25px" height="25px"/><span>csea@nitc.ac.in</span></li>
 										</ul>
 										<div class="underline"></div>

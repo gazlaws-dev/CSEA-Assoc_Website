@@ -43,32 +43,14 @@ batch of CSE.
 of the students and faculty members of the department and had turned out
 to be a huge success. The day turned out to be a very memorable one for
 the alumni, faculty and the students involved. It included a lot of fun
-activities including a treasure hunt and a volleyball game. Here's a
-glimpse of everything that had happened.
+activities including a treasure hunt and a volleyball game. 
 							<br><br>
-							<iframe src="CSEA%20-%20Activities_files/video.html" style="border:none;overflow:hidden" scrolling="no" allowtransparency="true" allowfullscreen="true" height="315" width="560" frameborder="0"></iframe>
-							<br><br>
-							Now comes the next edition, Loopback '18, for the batch of
-2008. An amazing fun filled day awaits you where you will relive college
-memories and ignite those strong friendships built during your time at
-NITC. Bring your family too and make it an even more memorable
-get-together!!
 
-<br><br>
-<h2><a href="https://docs.google.com/forms/d/e/1FAIpQLSebFsOPdG92D6UX6JuxyKWDtMaWgqea9uanCF1iaq_6wShJlA/viewform?usp=sf_link" target="_blank">Loopback '18 Registration </a></h2>
-<br>
+							 Loopback '18 was held on 24/02/2018 turned out to be a fun and lively experience for the current students as well as the alumni. A gathering of CSE B.tech, M.tech, and MCA students of batch 2008 (and 2007, 2013 as well) enlightened us of their journeys since their tenure at our college.The interactive Q&A session with the guests in the morning saw them sharing their wisdom to the curious students.The guests were taken on a scavenger hunt to explore the campus, followed by sports in the evening. The musical night along with a sumptuous dinner made Loopback ‘18 yet another memorable alumni meet.
+						
+							
 
-<h3> Contact info: </h3>
 
-1. Mail us at loopback@nitc.ac.in<br>
-<br>
-2. Loopback '18 coordinators: <br><br>
-M.Tech- Joe Cherri Ross : 9167648284<br>
-MCA- Jay Shankar : 9538999642<br>
-B.Tech- Vinitha Rajan : 9446382600<br>
-<br>
-2. Reach us through our student coordinators.<br>
-Nithin : 884 889 7874, Kumar : 790 799 4427
 			</ul>
 						</div>
 		</div>
