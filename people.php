@@ -99,17 +99,26 @@ function closecredits() {
 
 
 		});
+
+
+	var inductionsdb=myFireBase.child("members").child("flag_for_inductions");
+	var inductionflag;
+	inductionsdb.once("value").then(function(snapshot){
+	 	inductionflag=snapshot.val();
+	 	//console.log("ind "+inductionflag);
+	});
+	
     var facultydb=myFireBase.child("members").child("faculty");
     facultydb.once("value").then(function(snapshot){
       var facultyval=snapshot.val();
-      console.log(facultyval);
+      //console.log(facultyval);
       for(var iter in facultyval){
         (function(cntr){
           var facultyjson=facultyval[cntr];
           var name=facultyjson.nameof;
           var imgd=facultyjson.img;
           var facurl=facultyjson.email;
-          console.log("faculty val "+cntr);
+          //console.log("faculty val "+cntr);
           storageRef.child(imgd).getDownloadURL().then(function(url) {
             var xhr = new XMLHttpRequest();
             xhr.responseType = 'blob';
@@ -126,32 +135,46 @@ function closecredits() {
         })(iter);
       }
     });
-
     var studentsdb=myFireBase.child("members").child("students");
     studentsdb.orderByKey().limitToLast(3).on("child_added", function(snapshot) {
       var studentsval=snapshot.val();
       console.log(studentsval);
-      console.log(Object.keys(studentsval).length);
+      //console.log(Object.keys(studentsval).length);
       var stream=snapshot.key;
-      console.log(stream);
+      //console.log(stream);
       var targetid="#"+stream;
       var noofyears=Object.keys(studentsval).length;
-      if(noofyears<3)
-        noofyears=3;
+      console.log(noofyears+" noofyears");
+      if(noofyears<3){
+      	if(stream=="mtech")
+      		noofyears=2;
+      	else
+      		noofyears=3;
+      }
       var loopcounter=0;
       for(var iter in studentsval){
         (function(cntr){
-          if(cntr!="mtech"&&loopcounter<noofyears-3)
-            loopcounter++;
-          else if(cntr=="mtech"&&loopcounter<noofyears-2)
+        	console.log(stream+" stream");
+        	console.log(loopcounter+" "+noofyears);
+          if(stream!="mtech"&&inductionflag&&loopcounter<noofyears-3){
+          	loopcounter++;
+          }
+          if(stream!="mtech"&&!inductionflag&&loopcounter<noofyears-2){
+          	loopcounter++;
+          }
+          else if(stream=="mtech"&&inductionflag&&loopcounter<noofyears-2){
               loopcounter++;
+          }
+          else if(stream=="mtech"&&!inductionflag&&loopcounter<noofyears-1){
+              loopcounter++;
+          }
           else{
           $(targetid).append('  <div class="flexbox" id="'+stream+cntr+'" style="padding: 30px 0px 0px 0px;"></div>');
-          console.log('iter '+iter);
-          console.log(cntr)
+          //console.log('iter '+iter);
+          //console.log(cntr)
           var yearjson=studentsval[iter];
-          console.log(yearjson);
-          console.log(cntr);
+          //console.log(yearjson);
+          //console.log(cntr);
           var finaltargetid='#'+stream+cntr;
           $(finaltargetid).append('<div class="middle_header_small" >'+cntr+'</div>');
 
@@ -160,10 +183,10 @@ function closecredits() {
               var execjson=yearjson[cntr2];
               var name=execjson.nameof;
               var imgd=execjson.img;
-              console.log('imgd  '+imgd);
+              //console.log('imgd  '+imgd);
               var facurl=execjson.linkedin;
               var email=execjson.email;
-              console.log(cntr2);
+              //console.log(cntr2);
               storageRef.child(imgd).getDownloadURL().then(function(url) {
                 var xhr = new XMLHttpRequest();
                 xhr.responseType = 'blob';
@@ -173,7 +196,7 @@ function closecredits() {
                 xhr.open('GET', url);
                 xhr.send();
                 var imgurl=url;
-                console.log('imgurl '+imgurl);
+                //console.log('imgurl '+imgurl);
                 $(finaltargetid).append('<div class="contact_holder_small" style="width: 160px;"><center><div class="pic_small" style="background-image: url('+imgurl+')"></div></center><center><div class="name_small">'+name+'</div></center><center><div class="contact_link" ><a href="'+facurl+'" title="'+facurl+'" class="link-mod" target="_blank"><div class="contact_linkedin"></div></a><a href="mailto:'+email+'" title="'+email+'" class="link-mod"><div class="contact_mail"></div></a></div></center></div>');
               }).catch(function(error) {
                 console.log("executive not fetched");

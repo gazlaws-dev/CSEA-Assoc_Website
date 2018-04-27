@@ -66,10 +66,10 @@ function closecredits() {
 jQuery(document).ready(function(){
 	setTimeout(function() {
 		waiting();
-	}, 10000);
-			setTimeout(function() {
-				closepreloader();
-			}, 15000);
+	}, 3000);
+	setTimeout(function() {
+		closepreloader();
+	}, 3000);
 function createSliderPagination($container){
 	//console.log("entered");
 	var wrapper = $('<ul class="cd-slider-pagination"></ul>').insertAfter($container.find('.cd-slider-navigation'));
@@ -178,10 +178,12 @@ function enableSwipe($container) {
 										//console.log(imgurl);
 										var target='.'+targetgal;
 												if(inner_cntr==1)
-													$(target).prepend('<li class="selected '+targetgal+'-selected"><img src="'+imgurl+'" alt="Image"></li>')
+													$(target).prepend('<li class="selected '+targetgal+'-selected"><img class="lazyload" src="img/gal.gif" data-src="'+imgurl+'" alt="Image"></li>')
 												else {
 														addsecondimg(imgurl,target);
 												}
+												console.log($(target).find("img.lazy"));
+												$(target).find("img.lazy").lazyload().trigger("appear");
 										}).catch(function(error) {
 										console.log("image not fetched");
 									});
@@ -194,7 +196,7 @@ function enableSwipe($container) {
 		});
 		function addsecondimg(imgurlfunc,targetfunc){
 			//console.log("adding");
-			$(targetfunc).prepend('<li><img src="'+imgurlfunc+'" alt="Image"></li>');
+			$(targetfunc).prepend('<li><img class="lazyload" src="img/gal.gif" data-src="'+imgurlfunc+'" alt="Image"></li>');
 		}
 		function closepreloader(){
 			$(".preloader").addClass("invisible");
@@ -277,6 +279,7 @@ function enableSwipe($container) {
 
 		}
 });
+
 </script>
 
 </html>
