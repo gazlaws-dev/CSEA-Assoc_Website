@@ -1,7 +1,7 @@
 <html>
 <head>
 	<title>CSEA</title>
-	<meta name="viewport" content="width=device-width, user-scalable=false;">
+	<meta name="viewport" content="width=1024px">
 	<link rel="stylesheet" href="css/home.css" />
 	<link rel="stylesheet" href="css/style.css" />
 	<link rel="stylesheet" href="css/fonts/stylesheet.css" type="text/css" charset="utf-8" />
