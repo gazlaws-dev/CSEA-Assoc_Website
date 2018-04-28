@@ -455,6 +455,7 @@ button{
 	border: 1px solid green;
 	outline: none;
 	border-radius: 5px;
+	display: block;
 }
 .contact_left button{
 	background: #57b0bc;
