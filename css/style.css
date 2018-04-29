@@ -52,11 +52,11 @@
 }
 .main_middle_container_full{
 	position: relative;
-	width: 775px;
+	width: 730px;
 	left: 250px;
 	padding-top: 50px;
 	padding-left: 20px;
-	padding-right: 60px;
+	padding-right: 0px;
 	padding-bottom: 40px;
 }
 .main_middle_container .middle_header, .main_middle_container_full .middle_header{
@@ -91,7 +91,7 @@
 .act_info{
 	position: relative;
 	background-color: #ebebeb;
-	width:775px;
+	width:730px;
 	height:165px;
 	margin-bottom: 20px;
 	z-index:15;
@@ -127,7 +127,7 @@
 	font-family: 'Avenir';
 	letter-spacing: 0.2px;
 	line-height: 24px;
-	width:550px;
+	width:520px;
 	height:140px;
 }
 .project-info p{
@@ -591,7 +591,7 @@ button{
 	border: none;
 	padding:1.5px 0px 0px 0px;
 	margin:auto auto;
-	width:775px;
+	width:730px;
 	height:50px;
 	background: linear-gradient(to right, #115740 32%, #277763 50%, #115740 68%);
 	color: #ffffff;
