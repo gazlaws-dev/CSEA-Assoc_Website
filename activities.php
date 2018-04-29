@@ -51,6 +51,7 @@
 										<div class="content_holder">
 												<ul id="talks_ul" class="dynamic_jq">
 												</ul>
+                        <a href="all_activities.php"><button class="more_button">All Activities</button></a>
 										</div>
 								</div>
 
@@ -59,6 +60,7 @@
 										<div class="content_holder" >
 												<ul id="others_ul" class="dynamic_jq">
 												</ul>
+                        <a href="all_activities.php"><button class="more_button">All Activities</button></a>
 										</div>
 								</div>
 

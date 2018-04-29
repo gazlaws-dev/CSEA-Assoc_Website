@@ -625,6 +625,11 @@ button{
     transform: scale(0.99,0.98);
 	}
 
+.gallery_more{
+	position: relative;
+	margin-left: 110px;
+	text-align: center;
+}
 /*	.cd-slider-active {
 		width: 100% !important;
 		height:600px;

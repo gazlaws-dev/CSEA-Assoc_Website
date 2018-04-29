@@ -27,7 +27,7 @@
 		</div>
 		<div class="main_unified invisible" >
 				<div class="main_content">
-
+					<a href="all_gallery.php" class="gallery_more"><button class="more_button">All Galleries</button></a>
 				</div>
 		</div>
 

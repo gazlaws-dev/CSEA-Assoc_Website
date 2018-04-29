@@ -27,7 +27,7 @@
 						<ul>
 							<li><a data-val="team" onclick="changeTab(this)" class="selected_link">Our Team</a></li>
 							<li><a data-val="members" onclick="changeTab(this)">Our Members</a></li>
-							<!--<li><a data-val="alumni" onclick="changeTab(this)">CSEA Alumni</a></li> -->
+							<li><a data-val="alumni" onclick="changeTab(this)">CSEA Alumni</a></li> 
 						</ul>
 					</div>
 
@@ -218,15 +218,27 @@ function closecredits() {
       console.log(stream);
       var targetid="#alum_"+stream;
       var noofyears=Object.keys(studentsval).length;
-      if(noofyears<3)
-        noofyears=3;
+      if(noofyears<3){
+        if(stream=="mtech")
+          noofyears=2;
+        else
+          noofyears=3;
+      }
       var loopcounter=0;
       for(var iter in studentsval){
         (function(cntr){
-          if(cntr!="mtech"&&loopcounter>=noofyears-3)
+          if(stream!="mtech"&&inductionflag&&loopcounter>=noofyears-3){
             loopcounter++;
-          else if(cntr=="mtech"&&loopcounter>=noofyears-2)
+          }
+          if(stream!="mtech"&&!inductionflag&&loopcounter>=noofyears-2){
+            loopcounter++;
+          }
+          else if(stream=="mtech"&&inductionflag&&loopcounter>=noofyears-2){
               loopcounter++;
+          }
+          else if(stream=="mtech"&&!inductionflag&&loopcounter>=noofyears-1){
+              loopcounter++;
+          }
           else{
           $(targetid).append('  <div class="flexbox" id="alum_'+stream+cntr+'" style="padding: 30px 0px 0px 0px;"></div>');
           console.log('iter '+iter);
