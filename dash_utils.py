@@ -5,13 +5,23 @@ Created on Tue Nov 28 20:59:55 2017
 @author: abhiram haridas (abhiramharidas@gmail.com)
 """
 
+"""
+This file is imported in dashboard.py. This provides a set of utility functions used for input verification by the 
+main program. When run as a standalone program this serves as linebreak remover tool which takes a file name as input
+and returns the file content without line breaks as output. This can be used while inputting HTML field values to the
+console application.
+
+Functions generally return two values - error_flag and error_msg. error_flag will be set if there is an error and corresponding error
+message will be contained in error_msg
+
+"""
+
 import os.path
 
 
-#================================================== HELPER FUNCTIONS FOR ERROR HANDLING ====================================================
+#================================================== HELPER FUNCTIONS FOR INPUT VALIDATION ====================================================
 
-#Functions generally return two values - error_flag and error_msg. error_flag will be set if there is an error and corresponding error
-#message will be contained in error_msg
+
 
 def file_exist(file_name):            
     

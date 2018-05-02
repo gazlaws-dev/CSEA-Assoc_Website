@@ -4,6 +4,28 @@ Created on Tue Nov 28 20:59:55 2017
 @author: abhiram haridas (abhiramharidas@gmail.com)
 """
 
+
+"""
+
+This is the main file for the admin console application. The menu for the main program can be found at the end of this file.
+Separate functions like edit_home, edit_about etc handles editing the respective pages of the website.
+
+This file imports from dash_utils.py which is a set of utility functions. The main program expects admin-csea.json file to
+be available in the working directory. 
+
+Conventions Followed
+
+db_ref_string : The template string which when substituted gives the actual reference string to a specific database node
+db_ref : The actual reference to the database object
+blob_ref_string : The template string which when substituted gives the actual reference string to a specific storage location
+blob : The actual reference to the storage object
+
+All network operations have been enclosed in try blocks. If any of them fails due to any unknown reasons, a network
+error message is displayed. Actual error stack trace can be obtained by slightly modifying network_error method in this file.
+
+A small description of each function is available at the beginning of each function.
+"""
+
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
@@ -15,18 +37,19 @@ import json
 from datetime import datetime
 import dash_utils
 
-cred = credentials.Certificate('./admin-csea.json')
-#cred = credentials.Certificate('./admin.json')
+cred = credentials.Certificate('./admin-csea.json')           #authenticating with the database
 
 firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://cseanitcweb.firebaseio.com',
     'storageBucket': 'cseanitcweb.appspot.com'
-    #'databaseURL': 'https://hello-firebase-847fe.firebaseio.com',
-    #'storageBucket': 'hello-firebase-847fe.appspot.com'    
+   
 })
 
-bucket = storage.bucket()
+bucket = storage.bucket()                                     # Reference to the storage bucket
 
+
+
+# This functions displays an error message and exits. This can be edited to view error stack trace. The program exits after the message.
 
 def network_error():
 
@@ -37,6 +60,10 @@ def network_error():
 	# print "\n\n"
 
 	sys.exit()
+
+
+
+# Function for editing the home page including slider images, right pane, cneter pane and upcoming events
 
 def edit_home():
 	
@@ -188,6 +215,7 @@ def edit_home():
 			print("Invalid Input")
 
 
+# Function for editing About page
 
 def edit_about():
 
@@ -260,6 +288,8 @@ def edit_about():
 			print("Invalid input")
 
 
+
+# Function for adding members and toggling flag_for_inductions
 
 def edit_members():
 
@@ -396,6 +426,7 @@ def edit_members():
 			print "Invalid input"
 
 
+# Function to add an activity
 
 def edit_activity():
 
@@ -464,7 +495,7 @@ def edit_activity():
 		network_error()
 
 
-
+# Function to add an event to gallery
 
 def edit_gallery():
 
@@ -531,6 +562,9 @@ def edit_gallery():
 	except:
 		network_error()
 
+
+# Function to edit the contents of the notice box
+
 def edit_notice():
 
 	db_ref_string = 'notice_box'
@@ -543,6 +577,7 @@ def edit_notice():
 		network_error()
 
 
+# Function to backup/restore all HTML fileds in the database. Backup/Restore is done using backup_html.txt file in the working directory.
 
 def backup_restore_html():
 
