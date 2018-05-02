@@ -267,7 +267,8 @@ def edit_members():
 
 		print ("\nEnter 1 to add faculty")
 		print ("Enter 2 to add student")
-		print ("Enter 3 to exit")
+		print ("Enter 3 to toggle flag_for_inductions")
+		print ("Enter 4 to exit")
 
 		choice = raw_input()
 		
@@ -371,6 +372,25 @@ def edit_members():
 			
 
 		elif(choice == 3):
+			
+			db_ref_string = 'members/flag_for_inductions'
+
+			try:
+				db_ref = db.reference(db_ref_string)
+				val = db_ref.get()
+
+				if val == 0:
+					db_ref.set(1)
+					print('Value toggled: Current value is 1')
+				else:
+					db_ref.set(0)
+					print('Value toggled: Current value is 0')
+				
+			except:
+				network_error()
+
+
+		elif(choice == 4):
 			return;
 		else:
 			print "Invalid input"
