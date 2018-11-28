@@ -17,11 +17,23 @@ message will be contained in error_msg
 """
 
 import os.path
-
+import os
 
 #================================================== HELPER FUNCTIONS FOR INPUT VALIDATION ====================================================
 
+def check_file_count(folder_path, img_count):
+    error_flag = 0
+    error_msg = ""
 
+    if (not os.path.isdir(folder_path)):
+        error_flag = 1
+        error_msg = "\nError! The specified folder does not exist\n"
+    else:
+        if(len(os.walk(folder_path).next()[2]) != img_count):
+            error_flag = 1
+            error_msg = "\nError! The specified folder does not have " + str(img_count) + " files\n"
+        
+    return (error_flag,error_msg)
 
 def file_exist(file_name):            
     

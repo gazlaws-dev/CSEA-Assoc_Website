@@ -36,6 +36,7 @@ import traceback
 import json
 from datetime import datetime
 import dash_utils
+import os
 
 cred = credentials.Certificate('./admin-csea.json')           #authenticating with the database
 
@@ -537,9 +538,16 @@ def edit_gallery():
 	i = 1
 	img = {}
 
-	while(i <= img_count):
-		img_dir = raw_input("Enter path to image %s : " %str(i))
-
+	img_parent_dir = raw_input("Enter folder with the %s images : " %str(img_count))
+	
+	error_flag, error_msg = dash_utils.check_file_count(img_parent_dir,img_count)
+	
+	if(error_flag == 1):
+		print error_msg
+	
+	for img_name in sorted(os.listdir(img_parent_dir)):
+		img_dir = str(os.path.join(img_parent_dir, img_name))
+		print(img_dir)
 		error_flag, error_msg = dash_utils.file_exist(img_dir)
 		if (error_flag == 1):
 			print error_msg
